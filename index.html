@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kavee Fashion Global | Official Store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #080c14; color: #f1f5f9; min-height: 100vh; }
+        .hidden { display: none !important; }
+        
+        /* Login Card */
+        .login-wrapper { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .login-card { background: #0f172a; padding: 40px; border-radius: 16px; width: 100%; max-width: 400px; border: 1px solid #1e293b; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .login-card h2 { color: #38bdf8; margin-bottom: 8px; font-size: 26px; font-weight: 700; }
+        .login-card p { color: #64748b; font-size: 14px; margin-bottom: 25px; }
+        input, select { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #334155; background: #080c14; color: white; font-size: 14px; outline: none; }
+        input:focus { border-color: #38bdf8; }
+        button { width: 100%; padding: 12px; margin-top: 18px; border-radius: 8px; border: none; background: #38bdf8; color: #080c14; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 15px; }
+        button:hover { background: #0284c7; color: white; }
+
+        /* Admin Layout */
+        .admin-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #0f172a; border-right: 1px solid #1e293b; padding: 25px 20px; display: flex; flex-direction: column; justify-content: space-between; }
+        .brand { font-size: 22px; font-weight: bold; color: #38bdf8; margin-bottom: 35px; letter-spacing: 1px; }
+        .brand span { color: #f43f5e; }
+        .menu-list { list-style: none; }
+        .menu-item { padding: 12px 15px; border-radius: 8px; margin-bottom: 8px; color: #94a3b8; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 10px; }
+        .menu-item:hover, .menu-item.active { background: #1e293b; color: #38bdf8; font-weight: 600; }
+        
+        .main-content { flex: 1; padding: 35px; background: #080c14; overflow-y: auto; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #1e293b; padding-bottom: 15px; }
+
+        .table-card { background: #0f172a; padding: 25px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 25px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 14px; text-align: left; border-bottom: 1px solid #1e293b; font-size: 14px; }
+        th { background: #1e293b; color: #cbd5e1; }
+        
+        /* Customer Store Header & Contact Bar */
+        .contact-top-bar { background: #0f172a; padding: 8px 6%; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #38bdf8; border-bottom: 1px solid #1e293b; }
+        .contact-top-bar div { display: flex; gap: 20px; align-items: center; }
+        
+        .shop-container { padding: 30px 6%; }
+        .cat-bar { display: flex; gap: 12px; margin: 20px 0 30px 0; overflow-x: auto; padding-bottom: 10px; }
+        .cat-btn { background: #0f172a; color: #94a3b8; border: 1px solid #1e293b; padding: 8px 18px; border-radius: 20px; cursor: pointer; white-space: nowrap; width: auto; margin: 0; }
+        .cat-btn.active { background: #38bdf8; color: #080c14; font-weight: bold; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 25px; }
+        .p-card { background: #0f172a; border-radius: 14px; overflow: hidden; border: 1px solid #1e293b; text-align: center; padding-bottom: 20px; transition: 0.3s; }
+        .p-card:hover { transform: translateY(-5px); border-color: #38bdf8; }
+        .p-card img { width: 100%; height: 240px; object-fit: cover; background: #1e293b; }
+        .p-card h3 { margin: 15px 10px 5px 10px; color: #f8fafc; font-size: 17px; }
+        .p-card .cat-tag { font-size: 12px; color: #38bdf8; margin-bottom: 8px; }
+        .p-card .price { color: #f43f5e; font-weight: bold; font-size: 18px; margin-bottom: 12px; }
+
+        /* Footer */
+        footer { background: #0f172a; border-top: 1px solid #1e293b; padding: 30px 6%; margin-top: 50px; text-align: center; color: #64748b; font-size: 14px; }
+        footer h3 { color: #38bdf8; margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOGIN SECTION -->
+    <div id="sec-login" class="login-wrapper">
+        <div class="login-card">
+            <h2>KAVEE FASHION</h2>
+            <p>Welcome back! Please enter your details.</p>
+            <form id="loginForm">
+                <input type="text" id="uname" placeholder="Username / Email" required>
+                <input type="password" id="pass" placeholder="Password" required>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. ADMIN PANEL -->
+    <div id="sec-admin" class="admin-container hidden">
+        <div class="sidebar">
+            <div>
+                <div class="brand">KAVEE <span>GLOBAL</span></div>
+                <ul class="menu-list">
+                    <li class="menu-item active" onclick="switchTab('orders')">📦 Orders (Pending)</li>
+                    <li class="menu-item" onclick="switchTab('products')">👕 Add Product</li>
+                    <li class="menu-item" onclick="switchTab('categories')">🏷️ Categories</li>
+                </ul>
+            </div>
+            <button onclick="location.reload()" style="background: #1e293b; color: white;">Logout</button>
+        </div>
+
+        <div class="main-content">
+            <div class="top-header">
+                <h2>Admin Control Center</h2>
+                <span style="color: #22c55e; font-weight: bold;">● System Live</span>
+            </div>
+
+            <!-- Tab 1: Orders -->
+            <div id="tab-orders">
+                <div class="table-card">
+                    <h3>Pending Global Orders</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Country</th>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-orders-list"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab 2: Add Product -->
+            <div id="tab-products" class="hidden">
+                <div class="table-card" style="max-width: 500px;">
+                    <h3>Upload New Product</h3>
+                    <input type="text" id="p-name" placeholder="Item Name">
+                    <input type="number" id="p-price" placeholder="Price in USD ($)">
+                    
+                    <label style="display:block; margin-top:10px; font-size:13px; color:#94a3b8;">Select Category:</label>
+                    <select id="p-category"></select>
+
+                    <label style="display:block; margin-top:10px; font-size:13px; color:#94a3b8;">Upload Image File:</label>
+                    <input type="file" id="p-img-file" accept="image/*" style="background:#1e293b;">
+
+                    <button onclick="uploadProduct()" style="background: #22c55e; color: black;">Publish Product</button>
+                </div>
+            </div>
+
+            <!-- Tab 3: Unlimited Categories -->
+            <div id="tab-categories" class="hidden">
+                <div class="table-card" style="max-width: 500px;">
+                    <h3>Add New Category</h3>
+                    <input type="text" id="new-cat-name" placeholder="Category Name (e.g. Hoodies, Oversized)">
+                    <button onclick="addNewCategory()">Add Category</button>
+                </div>
+                
+                <div class="table-card" style="max-width: 500px;">
+                    <h3>Active Categories</h3>
+                    <ul id="admin-cat-list" style="margin-top:10px; padding-left:20px; color:#cbd5e1;"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. CUSTOMER STORE -->
+    <div id="sec-customer" class="hidden">
+        
+        <!-- Official Contact Top Bar -->
+        <div class="contact-top-bar">
+            <div>
+                <span>📍 Dehiwaththa, Serunuwara, Sri Lanka</span>
+                <span>📞 Hotline: 0742052295</span>
+            </div>
+            <div>
+                <span>✈️ Worldwide Express Delivery (UK, Canada, USA)</span>
+            </div>
+        </div>
+
+        <div class="shop-container">
+            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:20px;">
+                <div>
+                    <h1 style="color:#38bdf8;">KAVEE FASHION GLOBAL</h1>
+                    <p style="color:#94a3b8;">Official Apparel & Streetwear Store</p>
+                </div>
+                <button onclick="location.reload()" style="width:auto; padding:10px 20px; background:#1e293b; color:white;">Logout</button>
+            </div>
+
+            <!-- Dynamic Category Bar -->
+            <div class="cat-bar" id="customer-cat-bar"></div>
+
+            <!-- Dynamic Product Grid -->
+            <div class="product-grid" id="customer-product-grid"></div>
+        </div>
+
+        <!-- Official Store Footer -->
+        <footer>
+            <h3>KAVEE FASHION</h3>
+            <p style="color:#cbd5e1; margin-bottom:5px;">Dehiwaththa, Serunuwara, Sri Lanka</p>
+            <p>Official Contact: 0742052295 | Email: support@kaveefashion.com</p>
+            <p style="margin-top:15px; font-size:12px;">© 2026 Kavee Fashion Global. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data Stores
+        let categories = JSON.parse(localStorage.getItem('kavee_cats')) || ['All', 'T-Shirts', 'Oversized', 'Hoodies'];
+        let products = JSON.parse(localStorage.getItem('kavee_prods')) || [];
+        let orders = JSON.parse(localStorage.getItem('kavee_orders')) || [];
+
+        let currentCat = 'All';
+
+        // Secret Admin Login Check
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let u = document.getElementById('uname').value;
+            let p = document.getElementById('pass').value;
+
+            document.getElementById('sec-login').classList.add('hidden');
+
+            // Admin Credentials
+            if(u === 'Sadali' && p === '@Kavisha2004@') {
+                document.getElementById('sec-admin').classList.remove('hidden');
+                renderAdminOrders();
+                loadCategorySelect();
+                renderCategoryList();
+            } else {
+                document.getElementById('sec-customer').classList.remove('hidden');
+                renderCustomerStore();
+            }
+        });
+
+        function switchTab(tab) {
+            document.getElementById('tab-orders').classList.add('hidden');
+            document.getElementById('tab-products').classList.add('hidden');
+            document.getElementById('tab-categories').classList.add('hidden');
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+        }
+
+        // Add Category
+        function addNewCategory() {
+            let catName = document.getElementById('new-cat-name').value.trim();
+            if(catName && !categories.includes(catName)) {
+                categories.push(catName);
+                localStorage.setItem('kavee_cats', JSON.stringify(categories));
+                document.getElementById('new-cat-name').value = '';
+                renderCategoryList();
+                loadCategorySelect();
+                alert('Category Added Successfully!');
+            }
+        }
+
+        function renderCategoryList() {
+            let list = document.getElementById('admin-cat-list');
+            list.innerHTML = categories.map(c => `<li style="margin-bottom:5px;">${c}</li>`).join('');
+        }
+
+        function loadCategorySelect() {
+            let select = document.getElementById('p-category');
+            select.innerHTML = categories.filter(c => c !== 'All').map(c => `<option value="${c}">${c}</option>`).join('');
+        }
+
+        // Upload Product with Direct Image File
+        function uploadProduct() {
+            let name = document.getElementById('p-name').value;
+            let price = document.getElementById('p-price').value;
+            let category = document.getElementById('p-category').value;
+            let fileInput = document.getElementById('p-img-file');
+
+            if(!name || !price || fileInput.files.length === 0) {
+                alert('Please fill all fields and select an image file!');
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function(e) {
+                let imgDataUrl = e.target.result;
+                
+                products.push({
+                    name: name,
+                    price: parseFloat(price),
+                    category: category,
+                    img: imgDataUrl
+                });
+
+                localStorage.setItem('kavee_prods', JSON.stringify(products));
+                alert('Product Published Successfully!');
+                document.getElementById('p-name').value = '';
+                document.getElementById('p-price').value = '';
+                fileInput.value = '';
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        // Customer Store Logic
+        function renderCustomerStore() {
+            let catBar = document.getElementById('customer-cat-bar');
+            catBar.innerHTML = categories.map(c => `
+                <button class="cat-btn ${c === currentCat ? 'active' : ''}" onclick="filterCategory('${c}')">${c}</button>
+            `).join('');
+
+            let grid = document.getElementById('customer-product-grid');
+            grid.innerHTML = '';
+
+            let filtered = currentCat === 'All' ? products : products.filter(p => p.category === currentCat);
+
+            if(filtered.length === 0) {
+                grid.innerHTML = '<p style="color:#64748b;">No products available in this category.</p>';
+                return;
+            }
+
+            filtered.forEach(p => {
+                grid.innerHTML += `
+                    <div class="p-card">
+                        <img src="${p.img}" alt="Product">
+                        <div class="cat-tag">${p.category}</div>
+                        <h3>${p.name}</h3>
+                        <div class="price">$${p.price.toFixed(2)}</div>
+                        <button onclick="buyProduct('${p.name}', ${p.price})" style="width:85%;">Buy Now</button>
+                    </div>
+                `;
+            });
+        }
+
+        function filterCategory(cat) {
+            currentCat = cat;
+            renderCustomerStore();
+        }
+
+        function buyProduct(itemName, price) {
+            let country = prompt("Enter Shipping Country (e.g. UK, Canada, USA):", "United Kingdom");
+            if(!country) return;
+
+            orders.push({
+                customer: 'Global Buyer',
+                country: country,
+                item: itemName,
+                price: price,
+                status: 'Pending'
+            });
+
+            localStorage.setItem('kavee_orders', JSON.stringify(orders));
+            alert('Order Placed Successfully!');
+        }
+
+        // Admin Orders List
+        function renderAdminOrders() {
+            let tbody = document.getElementById('admin-orders-list');
+            tbody.innerHTML = '';
+
+            if(orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#64748b;">No orders received yet.</td></tr>';
+                return;
+            }
+
+            orders.forEach((o, i) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${o.customer}</td>
+                        <td>${o.country}</td>
+                        <td>${o.item}</td>
+                        <td><b>$${o.price}</b></td>
+                        <td style="color:${o.status === 'Pending' ? '#f59e0b' : '#3b82f6'}; font-weight:bold;">${o.status}</td>
+                        <td>${o.status === 'Pending' ? `<button onclick="shipOrder(${i})" style="padding:4px 8px; font-size:12px; margin:0; background:#3b82f6; color:white;">Ship Order</button>` : 'Shipped'}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function shipOrder(index) {
+            orders[index].status = 'Shipped';
+            localStorage.setItem('kavee_orders', JSON.stringify(orders));
+            renderAdminOrders();
+        }
+    </script>
+
+</body>
+</html>
